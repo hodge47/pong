@@ -17,7 +17,8 @@ public class Ball : MonoBehaviour
     [SerializeField]
     private Canvas pongCourt;
 
-    private float currentDirection = 1;
+    private float currentDirectionX = 1;
+    private float currentDirectionY = 0;
 
     private System.Random rand = new System.Random();
 
@@ -45,21 +46,40 @@ public class Ball : MonoBehaviour
     {
         float _rand = rand.Next(0, 2);
         float _direction = (_rand == 0) ? 1 : -1;
-        currentDirection = _direction;
+        currentDirectionX = _direction;
     }
 
     private void KeepBallInBounds()
     {
         Vector2 _currentPosition = rectTransform.anchoredPosition;
-        // Test Horizontal Axis
+        // Horizontal Axis
         if (_currentPosition.x - (ballSize * 3) <= -(pongCourt.pixelRect.width / 2) || _currentPosition.x + (ballSize * 3) >= (pongCourt.pixelRect.width / 2))
         {
-            currentDirection *= -1;
+            currentDirectionX *= -1;
+        }
+        // Vertical Axis
+        if (_currentPosition.y + (ballSize * 2) > (pongCourt.pixelRect.height / 2) || _currentPosition.y - (ballSize * 2) < -(pongCourt.pixelRect.height / 2))
+        {
+            currentDirectionY *= -1;
         }
     }
 
     private void MoveBall()
     {
-        rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x + (moveIncrement * currentDirection), rectTransform.anchoredPosition.y), Time.deltaTime * speed);
+        rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x + (moveIncrement * currentDirectionX), rectTransform.anchoredPosition.y + (moveIncrement * currentDirectionY)), Time.deltaTime * speed);
+    }
+
+    private float HitFactor(Vector2 _ballPos, Vector2 _paddlePos, float _paddleHeight)
+    {
+        return (_ballPos.y - _paddlePos.y) / _paddleHeight;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Paddle")
+        {
+            currentDirectionX *= -1;
+            currentDirectionY = HitFactor(this.transform.position, collision.gameObject.transform.position, collision.gameObject.GetComponent<RectTransform>().sizeDelta.y);
+        }
     }
 }

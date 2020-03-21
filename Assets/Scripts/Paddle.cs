@@ -36,12 +36,12 @@ public class Paddle : MonoBehaviour
     private void MovePaddle()
     {
         Vector2 _currentPosition = rectTransform.anchoredPosition;
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             if (_currentPosition.y + (paddleSizeY) < (pongCourt.pixelRect.height / 2))
                 rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + moveIncrement), Time.deltaTime * speed);
         }
-        else if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
         {
             if (_currentPosition.y - (paddleSizeY) > -(pongCourt.pixelRect.height / 2))
                 rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - moveIncrement), Time.deltaTime * speed);
