@@ -10,17 +10,24 @@ public class Ball : MonoBehaviour
     [SerializeField]
     private float speed = 100f;
     [SerializeField]
+    private float maxSpeed = 2500f;
+    [SerializeField]
     private float moveIncrement = 100f;
+    [SerializeField]
+    private int volleySpeedIncrement = 10;
 
     private RectTransform rectTransform;
     private float ballSize;
-    [SerializeField]
     private Canvas pongCourt;
 
     private float currentDirectionX = 1;
     private float currentDirectionY = 0;
+    private float ballSpeed;
 
     private System.Random rand = new System.Random();
+
+    [HideInInspector]
+    public int volleyCount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +38,8 @@ public class Ball : MonoBehaviour
         rectTransform = this.gameObject.GetComponent<RectTransform>();
         // Get the ball size
         ballSize = rectTransform.sizeDelta.x;
+        // Get the original ball speed so we can reset after failed volley
+        ballSpeed = speed;
         // Choose the start direction of the ball
         ChooseStartDirection();
     }
@@ -53,12 +62,12 @@ public class Ball : MonoBehaviour
     {
         Vector2 _currentPosition = rectTransform.anchoredPosition;
         // Horizontal Axis
-        if (_currentPosition.x - (ballSize * 3) <= -(pongCourt.pixelRect.width / 2) || _currentPosition.x + (ballSize * 3) >= (pongCourt.pixelRect.width / 2))
+        if (_currentPosition.x - (ballSize / 2) <= -(pongCourt.pixelRect.width / 2) || _currentPosition.x + (ballSize / 2) >= (pongCourt.pixelRect.width / 2))
         {
             currentDirectionX *= -1;
         }
         // Vertical Axis
-        if (_currentPosition.y + (ballSize * 2) > (pongCourt.pixelRect.height / 2) || _currentPosition.y - (ballSize * 2) < -(pongCourt.pixelRect.height / 2))
+        if (_currentPosition.y + (ballSize / 2) > (pongCourt.pixelRect.height / 2) || _currentPosition.y - (ballSize / 2) < -(pongCourt.pixelRect.height / 2))
         {
             currentDirectionY *= -1;
         }
@@ -66,7 +75,7 @@ public class Ball : MonoBehaviour
 
     private void MoveBall()
     {
-        rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x + (moveIncrement * currentDirectionX), rectTransform.anchoredPosition.y + (moveIncrement * currentDirectionY)), Time.deltaTime * speed);
+        rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x + (moveIncrement * currentDirectionX), rectTransform.anchoredPosition.y + (moveIncrement * currentDirectionY)), Time.deltaTime * ballSpeed);
     }
 
     private float BallDeflection(Vector2 _ballPos, Vector2 _paddlePos, float _paddleHeight)
@@ -81,11 +90,27 @@ public class Ball : MonoBehaviour
         {
             currentDirectionX *= -1;
             currentDirectionY = BallDeflection(this.transform.position, collision.gameObject.transform.position, collision.gameObject.GetComponent<RectTransform>().sizeDelta.y);
+            // Increment the volley count
+            volleyCount++;
+            // Increase the ball speed if the volley count is high enough
+            if(volleyCount % volleySpeedIncrement == 0 && ballSpeed < maxSpeed)
+            {
+                ballSpeed += ballSpeed / 2; 
+            }
         }
     }
 
     public void ResetBall()
     {
+        // Choose a new random start direction when the ball is reset
+        ChooseStartDirection();
+        // Reset the ball to the center of the screen
         rectTransform.anchoredPosition = new Vector2(0, 0);
+        // Reset the balls Y direction
+        currentDirectionY = 0f;
+        // Reset the ball speed
+        ballSpeed = speed;
+        // Reset the volley count
+        volleyCount = 0;
     }
 }
