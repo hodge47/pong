@@ -69,8 +69,9 @@ public class Ball : MonoBehaviour
         rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x + (moveIncrement * currentDirectionX), rectTransform.anchoredPosition.y + (moveIncrement * currentDirectionY)), Time.deltaTime * speed);
     }
 
-    private float HitFactor(Vector2 _ballPos, Vector2 _paddlePos, float _paddleHeight)
+    private float BallDeflection(Vector2 _ballPos, Vector2 _paddlePos, float _paddleHeight)
     {
+        // Return a Y direction based on where the ball hit the paddle
         return (_ballPos.y - _paddlePos.y) / _paddleHeight;
     }
 
@@ -79,7 +80,12 @@ public class Ball : MonoBehaviour
         if (collision.gameObject.tag == "Paddle")
         {
             currentDirectionX *= -1;
-            currentDirectionY = HitFactor(this.transform.position, collision.gameObject.transform.position, collision.gameObject.GetComponent<RectTransform>().sizeDelta.y);
+            currentDirectionY = BallDeflection(this.transform.position, collision.gameObject.transform.position, collision.gameObject.GetComponent<RectTransform>().sizeDelta.y);
         }
+    }
+
+    public void ResetBall()
+    {
+        rectTransform.anchoredPosition = new Vector2(0, 0);
     }
 }
