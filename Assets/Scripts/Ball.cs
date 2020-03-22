@@ -83,4 +83,9 @@ public class Ball : MonoBehaviour
             currentDirectionY = BallDeflection(this.transform.position, collision.gameObject.transform.position, collision.gameObject.GetComponent<RectTransform>().sizeDelta.y);
         }
     }
+
+    public void ResetBall()
+    {
+        rectTransform.anchoredPosition = new Vector2(0, 0);
+    }
 }
