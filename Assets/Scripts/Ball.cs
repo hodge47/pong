@@ -28,6 +28,8 @@ public class Ball : MonoBehaviour
 
     [HideInInspector]
     public int volleyCount = 0;
+    [HideInInspector]
+    public bool canMove = false;
 
     // Start is called before the first frame update
     void Start()
@@ -75,7 +77,8 @@ public class Ball : MonoBehaviour
 
     private void MoveBall()
     {
-        rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x + (moveIncrement * currentDirectionX), rectTransform.anchoredPosition.y + (moveIncrement * currentDirectionY)), Time.deltaTime * ballSpeed);
+        if (canMove)
+            rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x + (moveIncrement * currentDirectionX), rectTransform.anchoredPosition.y + (moveIncrement * currentDirectionY)), Time.deltaTime * ballSpeed);
     }
 
     private float BallDeflection(Vector2 _ballPos, Vector2 _paddlePos, float _paddleHeight)
@@ -93,9 +96,9 @@ public class Ball : MonoBehaviour
             // Increment the volley count
             volleyCount++;
             // Increase the ball speed if the volley count is high enough
-            if(volleyCount % volleySpeedIncrement == 0 && ballSpeed < maxSpeed)
+            if (volleyCount % volleySpeedIncrement == 0 && ballSpeed < maxSpeed)
             {
-                ballSpeed += ballSpeed / 2; 
+                ballSpeed += ballSpeed / 2;
             }
         }
     }
