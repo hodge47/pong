@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum PlayerNumber { ONE, TWO}
+public enum PlayerNumberEnum { ONE, TWO, COMPUTER }
 
 public class Paddle : MonoBehaviour
 {
-    public PlayerNumber playerNumber = PlayerNumber.ONE;
+    public PlayerNumberEnum playerNumber = PlayerNumberEnum.ONE;
 
     [SerializeField]
     private float speed = 5f;
@@ -17,6 +17,11 @@ public class Paddle : MonoBehaviour
     private Canvas pongCourt;
     private RectTransform rectTransform;
     private float paddleSizeY;
+    private float paddleSpeed = 0;
+    private System.Random rand = new System.Random();
+
+    Ball ball;
+    RectTransform ballRectTransform;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +33,18 @@ public class Paddle : MonoBehaviour
         rectTransform = this.gameObject.GetComponent<RectTransform>();
         // Get the size of the paddle
         paddleSizeY = rectTransform.sizeDelta.y;
+        // Set the paddle speed if this is AI player
+        if (playerNumber == PlayerNumberEnum.COMPUTER)
+        {
+            paddleSpeed = speed / 2;
+        }
+        else
+        {
+            paddleSpeed = speed;
+        }
+        // Get ball information
+        ball = GameObject.FindObjectOfType<Ball>();
+        ballRectTransform = ball.gameObject.GetComponent<RectTransform>();
     }
 
     // Update is called once per frame
@@ -39,19 +56,37 @@ public class Paddle : MonoBehaviour
     private void MovePaddle()
     {
         Vector2 _currentPosition = rectTransform.anchoredPosition;
-        KeyCode _upKeyCode = (playerNumber == PlayerNumber.ONE) ? KeyCode.W : KeyCode.UpArrow;
-        KeyCode _downKeyCode = (playerNumber == PlayerNumber.ONE) ? KeyCode.S : KeyCode.DownArrow;
 
-        if (Input.GetKey(_upKeyCode))
+        if (playerNumber == PlayerNumberEnum.COMPUTER)
         {
-            if (_currentPosition.y + (paddleSizeY / 2) < (pongCourt.pixelRect.height / 2))
-                rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + moveIncrement), Time.deltaTime * speed);
+
+            // Allow the computer to move if the ball is on its side of the court
+            if (ballRectTransform.anchoredPosition.x > 0)
+            {
+                rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x, ball.gameObject.GetComponent<RectTransform>().anchoredPosition.y), Time.deltaTime * paddleSpeed);
+            }
+            // Move back to 0 if ball is on the opposite side of the court
+            else
+            {
+                rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x, 0), Time.deltaTime * paddleSpeed);
+            }
         }
-        else if (Input.GetKey(_downKeyCode))
+        else
         {
-            if (_currentPosition.y - (paddleSizeY / 2) > -(pongCourt.pixelRect.height / 2))
-                rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - moveIncrement), Time.deltaTime * speed);
+            KeyCode _upKeyCode = (playerNumber == PlayerNumberEnum.ONE) ? KeyCode.W : KeyCode.UpArrow;
+            KeyCode _downKeyCode = (playerNumber == PlayerNumberEnum.ONE) ? KeyCode.S : KeyCode.DownArrow;
 
+            if (Input.GetKey(_upKeyCode))
+            {
+                if (_currentPosition.y + (paddleSizeY / 2) < (pongCourt.pixelRect.height / 2))
+                    rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y + moveIncrement), Time.deltaTime * paddleSpeed);
+            }
+            else if (Input.GetKey(_downKeyCode))
+            {
+                if (_currentPosition.y - (paddleSizeY / 2) > -(pongCourt.pixelRect.height / 2))
+                    rectTransform.anchoredPosition = Vector2.MoveTowards(rectTransform.anchoredPosition, new Vector2(rectTransform.anchoredPosition.x, rectTransform.anchoredPosition.y - moveIncrement), Time.deltaTime * paddleSpeed);
+
+            }
         }
     }
 }
