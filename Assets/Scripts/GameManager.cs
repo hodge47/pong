@@ -5,10 +5,14 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject playerUI;
+    public GameObject playerUIPrefab;
+
+    public int playTo = 5;
 
     private int playerOneScore = 0;
     private int playerTwoScore = 0;
+
+    private string winner = "None";
 
     private Ball ball;
     private RectTransform ballRectTransform;
@@ -18,8 +22,11 @@ public class GameManager : MonoBehaviour
     private Text playerTwoScoreText;
     private Text volleyCountText;
     private Text countdownTimerText;
+    private Text playerOneNameText;
+    private Text playerTwoNameText;
     private float countdownTimeLeft = 3f;
     private bool countdownTimerActive = true;
+    private GameObject playerUI;
 
     private Canvas pongCourt;
 
@@ -29,14 +36,30 @@ public class GameManager : MonoBehaviour
         // Get the pong court
         pongCourt = GameObject.FindObjectOfType<Canvas>();
         // Instantiate the player UI
-        GameObject _playerUI = Instantiate(playerUI, pongCourt.gameObject.transform);
-        playerOneScoreText = _playerUI.transform.GetChild(0).GetComponent<Text>();
-        playerTwoScoreText = _playerUI.transform.GetChild(1).GetComponent<Text>();
-        volleyCountText = _playerUI.transform.GetChild(2).GetComponent<Text>();
-        countdownTimerText = _playerUI.transform.GetChild(5).GetComponent<Text>();
+        playerUI = Instantiate(playerUIPrefab, pongCourt.gameObject.transform);
+        PlayerUI _uiElements = playerUI.GetComponent<PlayerUI>();
+        playerOneScoreText = _uiElements.playerOneScoreText;
+        playerTwoScoreText = _uiElements.playerTwoScoreText;
+        volleyCountText = _uiElements.volleyCountText;
+        countdownTimerText = _uiElements.countdownTimerText;
+        playerOneNameText = _uiElements.playerOneNameText;
+        playerTwoNameText = _uiElements.playerTwoNameText;
         playerOneScoreText.text = "0";
         playerTwoScoreText.text = "0";
         volleyCountText.text = "Volley: 0";
+        playerOneNameText.text = "Player 1";
+        var _paddles = GameObject.FindObjectsOfType<Paddle>();
+        foreach (Paddle p in _paddles)
+        {
+            if (p.playerNumber == PlayerNumberEnum.TWO)
+            {
+                playerTwoNameText.text = "Player 2";
+            }
+            else if (p.playerNumber == PlayerNumberEnum.COMPUTER)
+            {
+                playerTwoNameText.text = "Computer";
+            }
+        }
 
         // Get the ball
         ball = GameManager.FindObjectOfType<Ball>();
@@ -56,19 +79,30 @@ public class GameManager : MonoBehaviour
 
     private void CheckForScore()
     {
-        // Player 1 scores
-        Vector2 _currentPosition = ballRectTransform.anchoredPosition;
-        if (_currentPosition.x + (ballSize / 2) >= (pongCourt.pixelRect.width / 2))
+        if (playerOneScore < playTo && playerTwoScore < playTo)
         {
-            playerOneScore += 1;
-            ball.ResetBall();
+            // Player 1 scores
+            Vector2 _currentPosition = ballRectTransform.anchoredPosition;
+            if (_currentPosition.x + (ballSize / 2) >= (pongCourt.pixelRect.width / 2))
+            {
+                playerOneScore += 1;
+                ball.ResetBall();
+            }
+            // Player 2 scores
+            if (_currentPosition.x - (ballSize / 2) <= -(pongCourt.pixelRect.width / 2))
+            {
+                playerTwoScore += 1;
+                ball.ResetBall();
+            }
         }
-        // Player 2 scores
-        if (_currentPosition.x - (ballSize / 2) <= -(pongCourt.pixelRect.width / 2))
+        else
         {
-            playerTwoScore += 1;
-            ball.ResetBall();
+            winner = (playerOneScore >= playTo) ? "Player 1" : $"{playerTwoNameText.text}";
+            playerUI.GetComponent<PlayerUI>().ShowWinMenu();
+            playerUI.GetComponent<PlayerUI>().winnerText.text = $"{winner.ToUpper()} WINS!";
+            ball.gameObject.SetActive(false);
         }
+
     }
 
     private void UpdatePlayerUI()

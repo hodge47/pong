@@ -15,6 +15,8 @@ public class Ball : MonoBehaviour
     private float moveIncrement = 100f;
     [SerializeField]
     private int volleySpeedIncrement = 10;
+    [SerializeField]
+    private bool isMainMenu = false;
 
     private RectTransform rectTransform;
     private float ballSize;
@@ -44,6 +46,9 @@ public class Ball : MonoBehaviour
         ballSpeed = speed;
         // Choose the start direction of the ball
         ChooseStartDirection();
+        // Make the ball move if main menu
+        if (isMainMenu)
+            canMove = true;
     }
 
     // Update is called once per frame
@@ -58,6 +63,8 @@ public class Ball : MonoBehaviour
         float _rand = rand.Next(0, 2);
         float _direction = (_rand == 0) ? 1 : -1;
         currentDirectionX = _direction;
+        if (isMainMenu)
+            currentDirectionY = -_direction;
     }
 
     private void KeepBallInBounds()
