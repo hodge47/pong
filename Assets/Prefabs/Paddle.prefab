@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4478075216929503647}
   - component: {fileID: 4478075216929503644}
   - component: {fileID: 4354601242626362371}
+  - component: {fileID: 964770853994436440}
   m_Layer: 5
   m_Name: Paddle
   m_TagString: Paddle
@@ -37,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 200, y: 0}
-  m_SizeDelta: {x: 35, y: 250}
+  m_SizeDelta: {x: 15, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4478075216929503646
 CanvasRenderer:
@@ -87,8 +88,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21b093499f0d24c66b682a5f71e64913, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerNumber: 0
   speed: 1000
-  moveIncrement: 100
+  moveIncrement: 8
 --- !u!61 &4354601242626362371
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -113,5 +115,26 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 35, y: 250}
+  m_Size: {x: 15, y: 125}
   m_EdgeRadius: 0
+--- !u!50 &964770853994436440
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4478075216929503634}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1000
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 1
+  m_SleepingMode: 0
+  m_CollisionDetection: 1
+  m_Constraints: 5

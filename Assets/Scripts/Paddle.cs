@@ -28,7 +28,6 @@ public class Paddle : MonoBehaviour
     {
         // Get the pong court canvas
         pongCourt = GameObject.FindObjectOfType<Canvas>();
-        //Debug.Log($"Court size: {pongCourt.pixelRect.width}x{pongCourt.pixelRect.height}");
         // Get the paddle rect
         rectTransform = this.gameObject.GetComponent<RectTransform>();
         // Get the size of the paddle

@@ -45,4 +45,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerUIPrefab: {fileID: 9109473562416013700, guid: dd6ef324c1999a94292433be70934a5d,
     type: 3}
-  playTo: 2
+  playTo: 5

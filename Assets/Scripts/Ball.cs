@@ -38,6 +38,8 @@ public class Ball : MonoBehaviour
     {
         // Get the pong court canvas
         pongCourt = GameObject.FindObjectOfType<Canvas>();
+        Debug.Log($"Court size: {pongCourt.pixelRect.width}x{pongCourt.pixelRect.height}");
+
         // Get the rect transform
         rectTransform = this.gameObject.GetComponent<RectTransform>();
         // Get the ball size
@@ -71,12 +73,12 @@ public class Ball : MonoBehaviour
     {
         Vector2 _currentPosition = rectTransform.anchoredPosition;
         // Horizontal Axis
-        if (_currentPosition.x - (ballSize / 2) <= -(pongCourt.pixelRect.width / 2) || _currentPosition.x + (ballSize / 2) >= (pongCourt.pixelRect.width / 2))
+        if (_currentPosition.x - (ballSize / 2) <= -(Screen.width / 2) || _currentPosition.x + (ballSize / 2) >= (Screen.width / 2))
         {
             currentDirectionX *= -1;
         }
         // Vertical Axis
-        if (_currentPosition.y + (ballSize / 2) > (pongCourt.pixelRect.height / 2) || _currentPosition.y - (ballSize / 2) < -(pongCourt.pixelRect.height / 2))
+        if (_currentPosition.y + (ballSize / 2) > (Screen.height / 2) || _currentPosition.y - (ballSize / 2) < -(Screen.height / 2))
         {
             currentDirectionY *= -1;
         }

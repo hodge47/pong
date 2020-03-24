@@ -88,8 +88,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 500
+  maxSpeed: 2500
   moveIncrement: 100
-  pongCourt: {fileID: 0}
+  volleySpeedIncrement: 10
+  isMainMenu: 0
+  volleyCount: 0
+  canMove: 0
 --- !u!61 &3687397365137856674
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -114,5 +118,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 75, y: 75}
+  m_Size: {x: 30, y: 30}
   m_EdgeRadius: 0

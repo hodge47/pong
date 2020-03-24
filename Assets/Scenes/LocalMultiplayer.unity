@@ -372,6 +372,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 964770853094939738, guid: e5891eebd917846e18e7b3d83a78d6fe,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 964770853094939739, guid: e5891eebd917846e18e7b3d83a78d6fe,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 964770853094939739, guid: e5891eebd917846e18e7b3d83a78d6fe,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 964770853094939739, guid: e5891eebd917846e18e7b3d83a78d6fe,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 964770853094939739, guid: e5891eebd917846e18e7b3d83a78d6fe,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 964770854093406850, guid: e5891eebd917846e18e7b3d83a78d6fe,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -477,6 +502,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 964770854093406860, guid: e5891eebd917846e18e7b3d83a78d6fe,
+        type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 960
+      objectReference: {fileID: 0}
+    - target: {fileID: 964770854093406860, guid: e5891eebd917846e18e7b3d83a78d6fe,
+        type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 600
+      objectReference: {fileID: 0}
     - target: {fileID: 964770854093406862, guid: e5891eebd917846e18e7b3d83a78d6fe,
         type: 3}
       propertyPath: m_Name
@@ -491,6 +526,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PaddlePlayer2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3694882805902050622, guid: e5891eebd917846e18e7b3d83a78d6fe,
+        type: 3}
+      propertyPath: playerNumber
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5891eebd917846e18e7b3d83a78d6fe, type: 3}
